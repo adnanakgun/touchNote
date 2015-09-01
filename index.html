@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>
+<html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>
+<html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>
+<html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js"> <!--<![endif]-->
+<head>
+
+    <!-- Meta-Information -->
+    <title>touchnote address book</title>
+    <meta charset="utf-8">
+    <meta name="description" content="touchnote address book">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <!-- font awesome -->
+    <link rel="stylesheet" href="css/font-awesome/css/font-awesome.min.css">
+
+    <!-- Our Website CSS Styles -->
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+<body ng-app="touchnoteAddressBook">
+<!--[if lt IE 7]>
+<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
+    your browser</a> to improve your experience.</p>
+<![endif]-->
+
+<div class="container" ng-controller="addressBookController">
+
+    <h1>Decide who to send your card to</h1>
+    <h3>Select who to send your card to</h3>
+    <div>
+        <a href="#" ng-click="dropDB();">Drop Database</a>
+        <a href="#" class="add-new-address" ng-click="addNewRow();"><i class="fa fa-plus"></i><span>Enter new address</span></a>
+    </div>
+    <div>
+        <ul class="letter-list">
+            <li ng-repeat="lettergroup in alphabet" ng-click="changeLetterGroup($index);" ng-class="(selectedLetter==$index) ? 'selected' : ''"><a ng-click="setLetters(lettergroup.list);">{{lettergroup.label}}</a></li>
+        </ul>
+    </div>
+    <div class="address-box-container">
+        <div class="address-box" ng-repeat="address in addresses | byAlphabetFraction:letters" ng-click="address.sel=!address.sel" ng-class="(address.sel) ? 'selected' : ''">
+            <i class="fa fa-user fa-3x"></i>
+            <div class="correspondence">
+                <span>{{address.name}} {{address.surname}}</span>
+                <span>{{address.address1}}, {{address.address2}}, {{address.town}}, {{address.postCode}}, {{address.county}}, {{address.country}}</span> 
+            </div>
+            <div class="action-buttons">
+                <a href="#" ng-click="editRow(address);$event.stopPropagation();"><i class="fa fa-pencil"></i> edit</a> <a href="#" ng-click="deleteRow($index);$event.stopPropagation();"><i class="fa fa-trash-o"></i> delete</a>
+            </div>            
+        </div>
+    </div>
+
+    <div class="popup-veil" ng-show="modalOpen">
+    </div>
+    <div class="popup" ng-show="modalOpen">
+        <h3 ng-show="addAction">Enter new address</h3>
+        <h3 ng-show="!addAction">Change address</h3>
+        <div class="form-item">
+            <label for="addressName">First name<sup>*</sup></label><input id="" type="text" ng-model="tempRow.name"/>
+        </div>
+        <div class="form-item">
+            <label for="addressSurname">Last name<sup>*</sup></label><input id="addressSurname" type="text" ng-model="tempRow.surname"/>
+        </div>
+        <div class="form-item">
+            <label for="addressCountry">Country<sup>*</sup></label><input id="addressCountry" type="text" ng-model="tempRow.country"/>
+        </div>
+        <div class="form-item">
+            <label for="addressPostcode">Postal code<sup>*</sup></label><input id="addressPostcode" type="text" ng-model="tempRow.postCode"/>
+        </div>
+        <div class="form-item">
+            <label for="addressAdd1">Address<sup>*</sup></label><input id="addressAdd1" type="text" ng-model="tempRow.address1"/>
+        </div>
+        <div class="form-item">
+            <input id="addressAdd2" type="text" ng-model="tempRow.address2"/>
+        </div>
+        <div class="form-item">
+            <label for="addressTown">Town<sup>*</sup></label><input id="addressTown" type="text" ng-model="tempRow.town"/>
+        </div>
+        <div class="form-item">
+            <label for="addressCounty">County</label><input id="addressCounty" type="text" ng-model="tempRow.county"/>
+        </div>
+        <div class="form-item">
+            <div class="buttons">       
+                <a href="#" ng-click="modalOpen = false;">cancel</a>
+                <a href="#" ng-click="addRow(tempRow);modalOpen=false;" ng-show="addAction">add</a>
+                <a href="#" ng-click="updateRow(tempRow);modalOpen=false;" ng-show="!addAction">update</a> 
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="js/vendor/jquery-1.11.3.min.js"></script>
+
+<script src="js/vendor/angular.min.js"></script>
+
+<script src="js/app.js"></script>
+<script src="js/controllers.js"></script>
+<script src="js/directives.js"></script>
+<script src="js/services.js"></script>
+<script src="js/filters.js"></script>
+
+</body>
+</html>
